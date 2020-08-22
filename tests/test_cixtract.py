@@ -6,8 +6,8 @@ class CixtractTest(TestCase):
     def test_crawl(self):
         cixtract = Cixtract()
 
-        url = "https://raw.githubusercontent.com/klau5dev/cixtract/master/tests/files/README.md"
-        with open("tests/files/README.md") as f:
+        url = "https://raw.githubusercontent.com/klau5dev/cixtract/master/README.md"
+        with open("README.md") as f:
             result = f.read()
 
         res = cixtract.crawl(url)
