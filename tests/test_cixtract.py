@@ -16,16 +16,25 @@ class CixtractTest(TestCase):
         url = "https://raw.githubusercontent.com/klau5dev/not_exist/master/README.md"
         self.assertRaises(DoesNotExist, cixtract.crawl, url)
 
+    def test_extract_path(self):
+        cixtract = Cixtract()
+        url = "https://github.com/klau5dev/cixtract"
 
-        for test in testcase:
-            res = cixtract.get_readme(test[0])
-            self.assertEqual(res, test[1])
+        result = cixtract.extract_path(url)
+        self.assertEqual(result, "klau5dev/cixtract")
 
+    def test_get_readme(self):
+        cixtract = Cixtract()
 
-        res = cixtract.get_readme(repo)
+        url = "https://github.com/klau5dev/cixtract"
+
+        with open("README.md") as f:
+            result = f.read()
+
+        res = cixtract.get_readme(url)
         self.assertEqual(res, result)
 
-        repo = "https://github.com/klau5dev/not_exist"
-        res = cixtract.get_readme(repo)
-        self.assertEqual(res, "")
+        url = "https://github.com/klau5dev/not_exist"
+
+        self.assertRaises(DoesNotExist, cixtract.get_readme, url)
 

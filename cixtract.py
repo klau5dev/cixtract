@@ -16,19 +16,13 @@ class Cixtract():
             raise DoesNotExist
 
         return res.text
+
+    def extract_path(self, repo: str) -> str:
+        return repo.replace("https://github.com/", "")
+
     def get_readme(self, repo: str) -> str:
         url = "https://raw.githubusercontent.com/{}/master/README.md"
-
-        path = repo.replace("https://github.com/", "")
+        path = self.extract_path(repo)
         url = url.format(path)
 
-        try:
-            res = self.crawl(url)
-            if res.status_code >= 400:
-                result = ""
-            else:
-                result = res.text
-        except:
-            result = ""
-
-        return result
+        return self.crawl(url)
