@@ -12,3 +12,18 @@ class CixtractTest(TestCase):
 
         res = cixtract.crawl(url)
         self.assertEqual(res.text, result)
+
+    def test_get_readme(self):
+        cixtract = Cixtract()
+
+        repo = "https://github.com/klau5dev/cixtract"
+        with open("README.md") as f:
+            result = f.read()
+
+        res = cixtract.get_readme(repo)
+        self.assertEqual(res, result)
+
+        repo = "https://github.com/klau5dev/not_exist"
+        res = cixtract.get_readme(repo)
+        self.assertEqual(res, "")
+
