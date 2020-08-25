@@ -96,5 +96,5 @@ if __name__ == "__main__":
     argv = parser.parse_args()
 
     cixtract = Cixtract()
-    result = cixtract.get_ci(argv.repo)
-    print(json.dumps(result))
+    ci_urls = cixtract.get_ci(argv.repo)
+    print(json.dumps(ci_urls, indent=4))
