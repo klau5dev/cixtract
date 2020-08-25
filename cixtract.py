@@ -23,19 +23,19 @@ class Cixtract():
 
         return res.text
 
-    def extract_path(self, repo: str) -> str:
+    def extract_repo_path(self, repo: str) -> str:
         return repo.replace("https://github.com/", "")
 
     def get_readme(self, repo: str) -> str:
         url = "https://raw.githubusercontent.com/{}/master/README.md"
-        path = self.extract_path(repo)
+        path = self.extract_repo_path(repo)
         url = url.format(path)
 
         return self.crawl(url)
 
     def guess_travis(self, repo: str) -> str:
         url = "https://api.travis-ci.org/repo/{}"
-        path = self.extract_path(repo)
+        path = self.extract_repo_path(repo)
         url = url.format(path.replace("/", "%2F"))
 
         headers = {"Travis-API-Version": "3"}
