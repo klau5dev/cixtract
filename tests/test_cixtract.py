@@ -56,3 +56,14 @@ class CixtractTest(TestCase):
         res = cixtract.parse_readme(content)
 
         self.assertEqual(res, ["https://travis-ci.org/klau5dev/cixtract"])
+
+    def test_get_ci(self):
+        cixtract = Cixtract()
+
+        url = "https://github.com/klau5dev/cixtract"
+        res = cixtract.get_ci(url)
+        self.assertEqual(res, ["https://travis-ci.org/klau5dev/cixtract"])
+
+        url = "https://github.com/klau5dev/not_exist"
+        res = cixtract.get_ci(url)
+        self.assertEqual(res, [])

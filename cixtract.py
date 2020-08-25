@@ -67,3 +67,21 @@ class Cixtract():
             result.add(url)
 
         return list(result)
+
+    def get_ci(self, repo_url: str) -> List[str]:
+        result: List[str] = []
+
+        try:
+            readme = self.get_readme(repo_url)
+            result.extend(self.parse_readme(readme))
+        except DoesNotExist:
+            pass
+
+        try:
+            guessed = self.guess_travis(repo_url)
+            if guessed not in result:
+                result.append(guessed)
+        except DoesNotExist:
+            pass
+
+        return result
