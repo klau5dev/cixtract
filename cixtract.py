@@ -1,3 +1,5 @@
+import argparse
+import json
 import re
 from typing import Dict, List, Set
 
@@ -85,3 +87,12 @@ class Cixtract():
             pass
 
         return result
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-r', '--repo', required=True, help='target repository url (only github)')
+    argv = parser.parse_args()
+
+    cixtract = Cixtract()
+    result = cixtract.get_ci(argv.repo)
+    print(json.dumps(result))
