@@ -9,5 +9,5 @@ Extract CI URL from github readme file.
 - [x] Extract CI URL from README - Travis CI
 - [ ] Extract CI URL from README - Jenkins CI
 - [x] Guess CI by github URL - Travis CI
-- [ ] Command line argument - get repository URL
+- [x] Command line argument - get repository URL
 - [ ] Command line argument - get multiple repository URL
