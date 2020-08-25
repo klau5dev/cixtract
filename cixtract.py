@@ -1,5 +1,8 @@
+import re
+from typing import Dict, List, Set
+
 import requests
-from typing import Dict
+
 
 class CixtractError(Exception):
     pass
@@ -46,3 +49,21 @@ class Cixtract():
             raise exception
 
         return "https://travis-ci.org/{}".format(path)
+
+    def parse_readme(self, readme: str) -> List[str]:
+        travisci = re.findall(r'(https?://(?:secure\.)?travis-ci.org/[A-z0-9\-_]*/[A-z0-9\-_\.]*)', readme)
+        result: Set[str] = set()
+
+        for url in travisci:
+            path = url.rfind('/')
+            filetype = url[path:].find('.')
+
+            if filetype != -1:
+                url = url[:path+filetype]
+
+            if url.startswith("https://secure") or url.startswith("http://secure"):
+                url = url.replace("secure.", "")
+
+            result.add(url)
+
+        return list(result)

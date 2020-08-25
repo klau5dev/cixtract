@@ -47,4 +47,12 @@ class CixtractTest(TestCase):
         url = "https://github.com/klau5dev/not_exist"
         self.assertRaises(DoesNotExist, cixtract.guess_travis, url)
 
+    def test_parse_readme(self):
+        cixtract = Cixtract()
 
+        with open("README.md") as f:
+            content = f.read()
+
+        res = cixtract.parse_readme(content)
+
+        self.assertEqual(res, ["https://travis-ci.org/klau5dev/cixtract"])
