@@ -35,6 +35,16 @@ class CixtractTest(TestCase):
         self.assertEqual(res, result)
 
         url = "https://github.com/klau5dev/not_exist"
-
         self.assertRaises(DoesNotExist, cixtract.get_readme, url)
+
+    def test_guess_travis(self):
+        cixtract = Cixtract()
+
+        url = "https://github.com/klau5dev/cixtract"
+        res = cixtract.guess_travis(url)
+        self.assertEqual(res, "https://travis-ci.org/klau5dev/cixtract")
+
+        url = "https://github.com/klau5dev/not_exist"
+        self.assertRaises(DoesNotExist, cixtract.guess_travis, url)
+
 

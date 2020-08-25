@@ -32,3 +32,17 @@ class Cixtract():
         url = url.format(path)
 
         return self.crawl(url)
+
+    def guess_travis(self, repo: str) -> str:
+        url = "https://api.travis-ci.org/repo/{}"
+        path = self.extract_path(repo)
+        url = url.format(path.replace("/", "%2F"))
+
+        headers = {"Travis-API-Version": "3"}
+
+        try:
+            _ = self.crawl(url, headers)
+        except DoesNotExist as exception:
+            raise exception
+
+        return "https://travis-ci.org/{}".format(path)
