@@ -1,10 +1,21 @@
 import requests
 
-class Cixtract():
-    def crawl(self, url: str) -> requests.Response:
-        res = requests.get(url)
-        return res
+class CixtractError(Exception):
+    pass
+class DoesNotExist(CixtractError):
+    pass
 
+class Cixtract():
+    def crawl(self, url: str) -> str:
+        try:
+            res = requests.get(url)
+        except:
+            raise DoesNotExist
+
+        if res.status_code >= 400:
+            raise DoesNotExist
+
+        return res.text
     def get_readme(self, repo: str) -> str:
         url = "https://raw.githubusercontent.com/{}/master/README.md"
 

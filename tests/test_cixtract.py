@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from cixtract import Cixtract
+from cixtract import Cixtract, DoesNotExist
 
 class CixtractTest(TestCase):
     def test_crawl(self):
@@ -11,16 +11,11 @@ class CixtractTest(TestCase):
             result = f.read()
 
         res = cixtract.crawl(url)
-        self.assertEqual(res.text, result)
+        self.assertEqual(res, result)
 
-    def test_get_readme(self):
-        with open("README.md") as f:
-            result = f.read()
-        testcase = [
-            ("https://github.com/klau5dev/cixtract", result),
-            ("https://github.com/klau5dev/not_exist", "")
-            ]
-        cixtract = Cixtract()
+        url = "https://raw.githubusercontent.com/klau5dev/not_exist/master/README.md"
+        self.assertRaises(DoesNotExist, cixtract.crawl, url)
+
 
         for test in testcase:
             res = cixtract.get_readme(test[0])
