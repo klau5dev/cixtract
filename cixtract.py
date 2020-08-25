@@ -61,7 +61,9 @@ class Cixtract():
             filetype = url[path:].find('.')
 
             if filetype != -1:
-                url = url[:path+filetype]
+                filetype = path + filetype
+                if url[filetype:].startswith(".svg") or url[filetype:].startswith(".png"):
+                    url = url[:filetype]
 
             if url.startswith("https://secure") or url.startswith("http://secure"):
                 url = url.replace("secure.", "")
