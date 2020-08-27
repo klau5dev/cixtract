@@ -52,9 +52,10 @@ class Cixtract():
 
         return "https://travis-ci.org/{}".format(path)
 
-    def parse_readme(self, readme: str) -> List[str]:
+    def parse_readme(self, readme: str) -> Dict:
+        result: Dict = {}
         travisci = re.findall(r'(https?://(?:secure\.)?travis-ci.org/[A-z0-9\-_]*/[A-z0-9\-_\.]*)', readme)
-        result: Set[str] = set()
+        travis_result: Set[str] = set()
 
         for url in travisci:
             path = url.rfind('/')
@@ -68,23 +69,28 @@ class Cixtract():
             if url.startswith("https://secure") or url.startswith("http://secure"):
                 url = url.replace("secure.", "")
 
-            result.add(url)
+            travis_result.add(url)
 
-        return list(result)
+        if travis_result:
+            result["Travis-ci"] = list(travis_result)
 
-    def get_ci(self, repo_url: str) -> List[str]:
-        result: List[str] = []
+        return result
+
+    def get_ci(self, repo_url: str) -> Dict:
+        result: Dict = {}
 
         try:
             readme = self.get_readme(repo_url)
-            result.extend(self.parse_readme(readme))
+            result.update(self.parse_readme(readme))
         except DoesNotExist:
             pass
 
         try:
             guessed = self.guess_travis(repo_url)
-            if guessed not in result:
-                result.append(guessed)
+            if result.get("Travis-ci", None) is None:
+                result["Travis-ci"] = [guessed]
+            elif guessed not in result["Travis-ci"]:
+                result["Travis-ci"].append(guessed)
         except DoesNotExist:
             pass
 
